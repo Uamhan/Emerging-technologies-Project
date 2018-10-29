@@ -8,6 +8,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 import matplotlib.pyplot as plt
 from keras.layers import Dense, Conv2D, Dropout, Flatten, MaxPooling2D
 from keras.models import Sequential
+import keras.models
 
 #Importing the training and test data from the tensoflow keras library.
 (data_training, label_training), (data_test, label_test) = tf.keras.datasets.mnist.load_data()
@@ -36,4 +37,10 @@ model.add(Dense(10,activation=tf.nn.softmax))
 model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 model.fit(x=data_training,y=label_training, epochs=10)
 
-#model.evaluate(data_test, label_test)
+print(model.evaluate(data_test, label_test))
+
+model.save('MNIST_MODEL.h5')
+
+new_model = keras.models.load_model('MNIST_MODEL.h5')
+
+print(new_model.evaluate(data_test,label_test))
