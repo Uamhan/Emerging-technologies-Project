@@ -17,10 +17,11 @@ import keras.models
 data_test = data_test.reshape(data_test.shape[0], 28, 28, 1)
 data_training = data_training.reshape(data_training.shape[0], 28, 28, 1)
 input_shape = (28, 28, 1)
+
+#trys to load the a pre compiled model if not found in the current directory creates a new model and fits the dataset to it.
 try:
     model = keras.models.load_model('MNIST_MODEL.h5')
-except IOError:
-
+except:
     #creating our sequential model. for our CNN(Convolutional neural network).
     #represents a linear stack of layers.
     model = Sequential()
@@ -39,6 +40,17 @@ except IOError:
     #compiles our model for use with the optimizer adam. The sparse categorical crossentropy loss algorythm.
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     model.fit(x=data_training,y=label_training, epochs=10)
+    #saves the model so that we only need to compile once.
     model.save('MNIST_MODEL.h5')
 
-print(model.evaluate(data_test, label_test))
+#randomly picks a number from 0 to 9999 for the imgindex
+imgIndex = np.random.randint(10000)
+#plots the test data from at index imgindex
+plt.imshow(data_test[imgIndex].reshape(28,28),cmap='Greys')
+#use the model created previously to predict what the number the img represents is
+prediction = model.predict(data_test[imgIndex].reshape(1, 28, 28,1))
+#priints the predicted value.
+print("predicted value = {}".format(prediction.argmax()))
+#shows the plot of the image.
+plt.show()
+
