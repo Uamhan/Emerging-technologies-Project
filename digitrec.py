@@ -74,6 +74,51 @@ def prep_image(image):
     #returns modifyed image
     return flatten
 
+def select_image():
+    #gets the gui pannel for the image
+    global panelA
+    #gets the path of the user image through windows file explorer
+    path = filedialog.askopenfilename()
+    #if the path isint empty
+    if len(path) > 0:
+        #read in image from path
+        image = cv2.imread(path)
+        #convert the colour of the image to a format that can be displayed by pythons pillow library
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        #preps the user image for predicition
+        prepImage = prep_image(image)
+        #predicts the digit in the user image
+        prediction = predict_image(prepImage)
+        #tempdisplay for pridiction
+        print(prediction)
+        #formats the image for display in the gui
+        image = Image.fromarray(image)
+        #reformats the image to a photoimage
+        image = ImageTk.PhotoImage(image)
+        #if panelA dosent exist initilise it
+        if panelA is None:
+            #panel will store our original image
+            panelA = Label(image=image)
+            panelA.image = image
+            panelA.pack(side="left", padx=10, pady=10)
+        # else update the image panel with new image
+        else:
+            # update the pannels
+            panelA.configure(image=image)
+            panelA.image = image
+
+#initilise gui
+root = Tk()
+#image pannel
+panelA = None
+#button to call select image command	
+btn = Button(root, text="Select an image", command=select_image)
+#button formating
+btn.pack(side="bottom", fill="both", expand="yes", padx="10", pady="10")
+ 
+#initilise main gui loop
+root.mainloop()
+
 
 
 
