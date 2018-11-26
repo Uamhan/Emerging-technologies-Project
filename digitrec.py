@@ -64,7 +64,15 @@ def predict_image(userimage):
     #returns predicted value
     return(prediction.argmax())
     
-
+def prep_image(image):
+    #converts image to grayscale
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    #resizes image to 28 by 28 pixels
+    gray = cv2.resize(255-gray, (28, 28))
+    #flattens the image ie reduces possible colour values from 0-255 to 0-1
+    flatten = gray.flatten() / 255
+    #returns modifyed image
+    return flatten
 
 
 
