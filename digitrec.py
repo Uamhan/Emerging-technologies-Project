@@ -52,6 +52,7 @@ def predict_image(userimage):
         #compiles the model
         model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
         #fits the model to the training data
+        print("First Time training starting this may take a while. will only have to be run once")
         model.fit(data_training, label_training,epochs=10,validation_data=(data_test, label_test))
         #saves the model weights to a file to prevent need to refit on subsequent uses
         model.save('MNIST_MODEL.h5')
